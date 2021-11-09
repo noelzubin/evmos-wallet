@@ -13,6 +13,16 @@ const LOCAL_NETWORK: Network = {
   extraTokens: [],
 };
 
+const YET_ANOTHER_NETWORK: Network = {
+  name: "localhost duplicate ",
+  rpcUrl: "http://localhost:8545",
+  token: {
+    decimal: 18,
+    denom: "BOB",
+  },
+  extraTokens: [],
+};
+
 export interface MainState {
   service?: RPCService;
   serviceStatus: ApiStatus;
@@ -26,7 +36,7 @@ export interface MainState {
 }
 
 const initialState: MainState = {
-  networks: [LOCAL_NETWORK],
+  networks: [LOCAL_NETWORK, YET_ANOTHER_NETWORK],
   service: undefined,
   serviceStatus: ApiStatus.NONE,
   accounts: [],

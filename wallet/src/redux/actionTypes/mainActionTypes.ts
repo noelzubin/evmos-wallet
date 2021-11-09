@@ -60,6 +60,11 @@ export interface AddTokenAction {
   addr: string;
 }
 
+export const FETCH_NETWORK_BALANCES = "mainActionTypes/FETCH_NETWORK_BALANCES";
+export interface FetchNetworkBalancesAction {
+  type: typeof FETCH_NETWORK_BALANCES;
+}
+
 export type MainAction =
   | SetUserAction
   | ConnectNetworkAction
@@ -68,4 +73,5 @@ export type MainAction =
   | LoadLocalAccountsAction
   | SetAccountsAction
   | UnlockWalletAction
-  | RestoreMnemonicAction;
+  | RestoreMnemonicAction
+  | FetchNetworkBalancesAction;

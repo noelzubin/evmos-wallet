@@ -57,3 +57,9 @@ export function restoreMnemonic(
 ): actions.RestoreMnemonicAction {
   return { type: actions.RESTORE_MNEMONIC, mnemonic };
 }
+
+export function fetchNetworkBalances(): actions.FetchNetworkBalancesAction {
+  return {
+    type: actions.FETCH_NETWORK_BALANCES,
+  };
+}

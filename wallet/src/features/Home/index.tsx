@@ -20,6 +20,7 @@ import { Link } from "react-router-dom";
 import * as actions from "redux/actionCreators/mainActionCreators";
 import { createWallet } from "redux/actionCreators/mainActionCreators";
 import { AppState } from "redux/reducers";
+import { MainState } from "redux/reducers/mainReducer";
 import s from "./index.module.sass";
 
 const { Paragraph } = Typography;
@@ -120,8 +121,15 @@ function useToggle(intialState: boolean = false) {
 
 const Accounts: React.FC<AccountsProps> = ({ accounts }) => {
   const [useBech32, toggleBech32] = useToggle(true);
-  const balances: any = useSelector<AppState>((state) => state.main.balances);
+  const { balances, currentNetworkIndex }: any = useSelector<
+    AppState,
+    MainState
+  >((state) => state.main);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(actions.fetchNetworkBalances());
+  }, [currentNetworkIndex]);
 
   const asHex = (address: string) => {
     return "0x" + toHex(Bech32.decode(address).data);

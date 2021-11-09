@@ -1,26 +1,33 @@
 import { Layout, Space } from "antd";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { AppState } from "redux/reducers";
 import { ApiStatus, Network } from "types";
 import { Select } from "antd";
 import { MainState } from "redux/reducers/mainReducer";
+import * as actions from "redux/actionCreators/mainActionCreators";
 import s from "./index.module.sass";
 import { Link } from "react-router-dom";
 
 const { Header } = Layout;
 
 const AppHeader = () => {
+  const dispatch = useDispatch();
   const { networks, serviceStatus, currentNetworkIndex } = useSelector<
     AppState,
     MainState
   >((state) => state.main);
+
   const network = networks[currentNetworkIndex];
 
   const getOptions = () =>
-    networks.map((network: Network) => ({
+    networks.map((network: Network, ind: number) => ({
       label: network.name,
-      value: network.name,
+      value: ind,
     }));
+
+  const handleNetworkChange = (ind: number) => {
+    dispatch(actions.connectNetwork(ind));
+  };
 
   return (
     <Header>
@@ -34,7 +41,8 @@ const AppHeader = () => {
             <Select
               loading={serviceStatus === ApiStatus.PENDING}
               options={getOptions()}
-              value={network.name}
+              value={currentNetworkIndex}
+              onChange={handleNetworkChange}
             />
           </Space>
         </div>

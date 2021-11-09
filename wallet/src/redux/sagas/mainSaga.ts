@@ -144,7 +144,7 @@ function* setAccounts({ accounts }: actionTypes.SetAccountsAction) {
   const { currentNetworkIndex, networks }: MainState = yield select(
     mainStateSelector
   );
-  yield fetchBalances(accounts, networks[currentNetworkIndex].extraTokens);
+  // yield fetchBalances(accounts, networks[currentNetworkIndex].extraTokens);
 }
 
 function* addToken({ addr }: actionTypes.AddTokenAction) {
@@ -153,7 +153,6 @@ function* addToken({ addr }: actionTypes.AddTokenAction) {
 
   try {
     let token: ERC20Token = yield service?.getERC20Info(addr);
-    console.log(token);
     let extraTokens;
 
     const newNetworks = networks.map((nt, ind) => {
@@ -181,6 +180,13 @@ function* addToken({ addr }: actionTypes.AddTokenAction) {
   }
 }
 
+function* fetchNetworkBalances() {
+  const { accounts, networks, currentNetworkIndex }: MainState = yield select(
+    mainStateSelector
+  );
+  yield fetchBalances(accounts, networks[currentNetworkIndex].extraTokens);
+}
+
 export default [
   takeLatest(actionTypes.CONNECT_NETWORK, onConnectNetwork),
   takeEvery(actionTypes.LOAD_LOCAL_ACCOUNTS, loadLocalAccounts),
@@ -189,6 +195,7 @@ export default [
   takeLeading(actionTypes.RESTORE_MNEMONIC, restoreMnemonic),
   takeEvery(actionTypes.SET_ACCOUNTS, setAccounts),
   takeEvery(actionTypes.ADD_TOKEN, addToken),
+  takeEvery(actionTypes.FETCH_NETWORK_BALANCES, fetchNetworkBalances),
 ];
 
 const mainStateSelector: (state: AppState) => MainState = (state) => state.main;
